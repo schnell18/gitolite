@@ -228,7 +228,13 @@ sub http_simulate_ssh_connection {
         # we also need to pipe STDERR out via STDOUT, else the user doesn't see those messages!
         open(STDERR, ">&STDOUT") or _die "Can't dup STDOUT: $!";
     }
-    $ENV{SSH_CONNECTION} = "$ENV{REMOTE_ADDR} $ENV{REMOTE_PORT} $ENV{SERVER_ADDR} $ENV{SERVER_PORT}";
+    $ENV{SSH_CONNECTION} = sprintf(
+        "%s %s %s %s",
+        $ENV{REMOTE_ADDR} || "",
+        $ENV{REMOTE_PORT} || "",
+        $ENV{SERVER_ADDR} || "",
+        $ENV{SERVER_PORT} || ""
+    );
 }
 
 my $http_headers_printed = 0;
